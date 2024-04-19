@@ -35,16 +35,16 @@ public class ClienteControle {
 	
 	private final ClienteServico servico;
 	
-	@PostMapping("adicionar")
+	@PostMapping
 	public ResponseEntity<ClienteDto>cadastrarCelular(@RequestBody @Valid ClienteDto cadastro){
 		var cadastre = servico.cadastrarCelular(cadastro);
-		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("celular/adicionar/{id}")
+		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("celular/{id}")
 		.buildAndExpand(cadastre.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ClienteDto(cadastre));
 		
 	}
 	
-	@GetMapping("lista")
+	@GetMapping
 	public ResponseEntity<List<ClienteDto>>listar(){
 		var lista = servico.Listar().stream().map(ClienteDto::new).toList();
 		return ResponseEntity.ok(lista);
@@ -52,20 +52,20 @@ public class ClienteControle {
 				
 	}		
 	
-	@GetMapping("busca/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<?>buscarId(@PathVariable Long id)	{
 		var busca = servico.BuscarPorId(id);
 		return  ResponseEntity.ok(busca);
 	}
 	
-	@PutMapping("editar")
+	@PutMapping
 	public ResponseEntity<ClienteDto>atualizar(@RequestBody @Valid ClienteDto atualizar){		
 		var atualize = servico.atualizar(atualizar);
 		return ResponseEntity.ok().body(new ClienteDto(atualize));
 			
 	}
 	
-	@DeleteMapping("deletar/{id}")
+	@DeleteMapping("{id}")
 	public ResponseEntity<ClienteDto>excluir(@PathVariable Long id){
 		servico.excluir(id);
 		return ResponseEntity.noContent().build();
